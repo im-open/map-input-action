@@ -1,0 +1,19 @@
+name: 'Map Input'
+description: 'Github Action cleaning input by comparing user input against a list in a case-insensitive manner'
+author: 'JosephDSchwartz'
+branding:
+  icon: 'package'
+  color: 'orange'
+inputs:
+  input:
+    required: true
+    description: The input to map
+  input_map:
+    required: true
+    description: A json object where the property names are the desired output and the values are the list of values, or a single string value, to compare input with.
+outputs:
+  mapped_input:
+    description: 'The first matching output from the input_map when compared to the input'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
