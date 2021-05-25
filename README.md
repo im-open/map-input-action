@@ -22,19 +22,25 @@ jobs:
   map-input:
     runs-on: ubuntu-20.04
     outputs:
-      env: ${{ steps.map-user-input.outputs.mapped_input }}
+      someInputMapped: ${{ steps.clean-user-input.outputs.mapped_input }}
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: map-input-action
+        uses: im-open/map-input-action@v1
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
+      - name: Do Some
+        if: ${{ steps.clean-user-input.outputs.mapped_input == 'Some' }}
+        run: echo "Some was the input"
+      - name: Do Thing
+        if: ${{ steps.clean-user-input.outputs.mapped_input == 'Thing' }}
+        run: echo "Thing was the input"
 ```
 
 ## Recompiling
 
-If changes are made, you will need to re-compile the action. 
+If changes are made to the action's code in this repository, or its dependencies, you will need to re-compile the action.
 
 ```
 # Installs dependencies and bundles the code
@@ -44,4 +50,4 @@ npm run build
 npm run bundle
 ```
 
-These commands utilize [esbuild](https://esbuild.github.io/getting-started/#bundling-for-node) to bundle the action and it's dependencies into a single file located in the `dist` folder.
+These commands utilize [esbuild](https://esbuild.github.io/getting-started/#bundling-for-node) to bundle the action and its dependencies into a single file located in the `dist` folder.

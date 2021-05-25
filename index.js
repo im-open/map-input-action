@@ -10,8 +10,8 @@ const run = () => {
     const input = core.getInput('input', { required: true }).toLowerCase();
     const inputMap = getInputMap();
 
-    console.log(`input: ${input}`);
-    console.log(`input_map: ${inputMap}`);
+    core.info(`input: ${input}`);
+    core.info(`input_map: ${inputMap}`);
 
     if (
       !Object.entries(inputMap).every(
@@ -19,19 +19,23 @@ const run = () => {
       )
     ) {
       throw new Error(
-        'The input_map properties are not single string values or arrays. Only those types are supported.'
+        'The provided input_map properties are not single string values or arrays which are the only supported types.'
       );
     }
 
     const match = Object.entries(inputMap).find(
       ([, value]) =>
         value === input ||
-        value.map(potentialInput => potentialInput.toString().toLowerCase()).includes(input)
+        value
+          .map(potentialInput => potentialInput.toString().toLowerCase())
+          .includes(input)
     );
 
     if (!match) throw new Error('The input did not match any expected inputs');
 
-    console.log(`The value from the input_map that matched the input: ${match[0]}`);
+    core.info(
+      `The value from the input_map that matched the input: ${match[0]}`
+    );
     core.setOutput('mapped_input', match[0]);
   } catch (error) {
     core.setFailed(error.message);
