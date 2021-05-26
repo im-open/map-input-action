@@ -8,6 +8,12 @@ An action for taking an input, comparing it to a list of values, and outputting 
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `input`                 | The input to map.                                                                                           |
 | `input_map`               |  A json object where the property names are the desired output and the values are the list of values, or a single string value, to compare `input` against.                                               |
+| `get_all_matches`        | An optional flag for whether or not to output all matches. By default the output is the first item from the input_map that matches. If this value is true then an array with every match is returned.                                           |
+
+## Output
+
+The matching property name(s) from the `input_map` where the value of the property equals the `input`. Depending on the `get_all_matches`, flag this will either be a single string (default) or an array of strings.
+
 ## Example
 
 ```yml

@@ -11,9 +11,12 @@ inputs:
   input_map:
     required: true
     description: A json object where the property names are the desired output and the values are the list of values, or a single string value, to compare input with.
+  get_all_matches:
+    required: false
+    description: A flag for whether or not to output all matches. By default the output is the first item from the input_map that matches. If this value is true then an array with every match is returned.
 outputs:
   mapped_input:
-    description: 'The first matching output from the input_map when compared to the input'
+    description: If get_all_matches is not set or is set to something other than true, then this is the first matching output from the input_map when compared to the input, otherwise it is an array of all matches.
 runs:
   using: 'node12'
   main: 'dist/index.js'

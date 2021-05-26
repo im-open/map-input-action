@@ -9,6 +9,7 @@ const run = () => {
   try {
     const input = core.getInput('input', { required: true }).toLowerCase();
     const inputMap = getInputMap();
+    const shouldOutputAllMatches = core.getInput('get_all_matches');
 
     core.info(`input: ${input}`);
     core.info(`input_map: ${inputMap}`);
@@ -23,7 +24,7 @@ const run = () => {
       );
     }
 
-    const match = Object.entries(inputMap).find(
+    const matchingEntries = Object.entries(inputMap).filter(
       ([, value]) =>
         value === input ||
         value
@@ -31,12 +32,18 @@ const run = () => {
           .includes(input)
     );
 
-    if (!match) throw new Error('The input did not match any expected inputs');
+    if (!matchingEntries || matchingEntries.length <= 0)
+      throw new Error('The input did not match any expected inputs');
+
+    const output =
+      shouldOutputAllMatches && shouldOutputAllMatches.toLowerCase() === 'true'
+        ? matchingEntries.map(match => match[0])
+        : matchingEntries[0][0];
 
     core.info(
-      `The value from the input_map that matched the input: ${match[0]}`
+      `The value(s) from the input_map that matched the input: ${output}`
     );
-    core.setOutput('mapped_input', match[0]);
+    core.setOutput('mapped_input', output);
   } catch (error) {
     core.setFailed(error.message);
     throw error;

@@ -68,3 +68,20 @@ jobs:
         run: |
           echo "Test Failed"
           exit code 1
+
+      - name: Test getting all matches
+        id: test-all-matches
+        uses: ./
+        with:
+          input: value
+          input_map: "{ \"FirstMatch\": \"value\", \"SecondMatch\": \"value\" }"
+          get_all_matches: true
+
+      - name: Success
+        if: contains(steps.test-all-matches.outputs.mapped_input, 'FirstMatch') && contains(steps.test-all-matches.outputs.mapped_input, 'SecondMatch')
+        run: echo "Test Passed!"
+      - name: Failure
+        if: ${{ !contains(steps.test-all-matches.outputs.mapped_input, 'FirstMatch') && !contains(steps.test-all-matches.outputs.mapped_input, 'SecondMatch') }}
+        run: |
+          echo "Test Failed"
+          exit code 1
