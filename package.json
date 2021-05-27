@@ -1,0 +1,28 @@
+{
+  "name": "map-input-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm ci && esbuild index.js --bundle --platform=node --outfile=dist/index.js",
+    "bundle": "esbuild index.js --bundle --platform=node --outfile=dist/index.js",
+    "format": "prettier --write **/*.js",
+    "format-check": "prettier --check **/*.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format",
+      "pre-push": "npm run format-check"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.2.6"
+  },
+  "devDependencies": {
+    "esbuild": "^0.12.2",
+    "husky": "^4.3.8",
+    "prettier": "^2.3.0"
+  }
+}

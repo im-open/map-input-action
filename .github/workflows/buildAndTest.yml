@@ -1,0 +1,87 @@
+name: Build and Test
+on: 
+  pull_request:
+    paths-ignore:
+      - '**.md'
+jobs:
+  build:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Build
+        run: npm run build
+      - name: Format
+        run: npm run format
+      - name: Check for unstaged changes
+        if: runner.os != 'windows'
+        run: ./check-for-unstaged-changes.sh
+
+  test:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test mapping against a list of inputs
+        id: test-mapping-list
+        uses: ./
+        with:
+          input: value
+          input_map: "{ \"MatchSuccessful\": [\"val\", \"value\"] }"
+
+      - name: Success
+        if: steps.test-mapping-list.outputs.mapped_input == 'MatchSuccessful'
+        run: echo "Test Passed!"
+      - name: Failure
+        if: steps.test-mapping-list.outputs.mapped_input != 'MatchSuccessful'
+        run: |
+          echo "Test Failed"
+          exit code 1
+
+      - name: Test mapping against a single value
+        id: test-mapping-single-value
+        uses: ./
+        with:
+          input: value
+          input_map: "{ \"MatchSuccessful\": \"value\" }"
+
+      - name: Success
+        if: steps.test-mapping-single-value.outputs.mapped_input == 'MatchSuccessful'
+        run: echo "Test Passed!"
+      - name: Failure
+        if: steps.test-mapping-single-value.outputs.mapped_input != 'MatchSuccessful'
+        run: |
+          echo "Test Failed"
+          exit code 1
+
+      - name: Test getting all matches
+        id: test-all-matches
+        uses: ./
+        with:
+          input: value
+          input_map: "{ \"FirstMatch\": \"value\", \"SecondMatch\": \"value\" }"
+          get_all_matches: true
+
+      - name: Success
+        if: contains(steps.test-all-matches.outputs.mapped_input, 'FirstMatch') && contains(steps.test-all-matches.outputs.mapped_input, 'SecondMatch')
+        run: echo "Test Passed!"
+      - name: Failure
+        if: ${{ !contains(steps.test-all-matches.outputs.mapped_input, 'FirstMatch') && !contains(steps.test-all-matches.outputs.mapped_input, 'SecondMatch') }}
+        run: |
+          echo "Test Failed"
+          exit code 1
