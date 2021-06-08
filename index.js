@@ -27,9 +27,7 @@ const run = () => {
     const matchingEntries = Object.entries(inputMap).filter(
       ([, value]) =>
         value === input ||
-        value
-          .map(potentialInput => potentialInput.toString().toLowerCase())
-          .includes(input)
+        value.map(potentialInput => potentialInput.toString().toLowerCase()).includes(input)
     );
 
     if (!matchingEntries || matchingEntries.length <= 0)
@@ -40,9 +38,7 @@ const run = () => {
         ? matchingEntries.map(match => match[0])
         : matchingEntries[0][0];
 
-    core.info(
-      `The value(s) from the input_map that matched the input: ${output}`
-    );
+    core.info(`The value(s) from the input_map that matched the input: ${output}`);
     core.setOutput('mapped_input', output);
   } catch (error) {
     core.setFailed(error.message);
