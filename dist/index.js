@@ -1,9 +1,6 @@
 var __commonJS = (cb, mod) =>
   function __require() {
-    return (
-      mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod),
-      mod.exports
-    );
+    return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
 
 // node_modules/@actions/core/lib/utils.js
@@ -33,8 +30,7 @@ var require_command = __commonJS({
         if (mod && mod.__esModule) return mod;
         var result = {};
         if (mod != null) {
-          for (var k in mod)
-            if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+          for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
         }
         result['default'] = mod;
         return result;
@@ -113,8 +109,7 @@ var require_file_command = __commonJS({
         if (mod && mod.__esModule) return mod;
         var result = {};
         if (mod != null) {
-          for (var k in mod)
-            if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+          for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
         }
         result['default'] = mod;
         return result;
@@ -126,20 +121,14 @@ var require_file_command = __commonJS({
     function issueCommand(command, message) {
       const filePath = process.env[`GITHUB_${command}`];
       if (!filePath) {
-        throw new Error(
-          `Unable to find environment variable for file command ${command}`
-        );
+        throw new Error(`Unable to find environment variable for file command ${command}`);
       }
       if (!fs.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
       }
-      fs.appendFileSync(
-        filePath,
-        `${utils_1.toCommandValue(message)}${os.EOL}`,
-        {
-          encoding: 'utf8'
-        }
-      );
+      fs.appendFileSync(filePath, `${utils_1.toCommandValue(message)}${os.EOL}`, {
+        encoding: 'utf8'
+      });
     }
     exports2.issueCommand = issueCommand;
   }
@@ -175,9 +164,7 @@ var require_core = __commonJS({
             }
           }
           function step(result) {
-            result.done
-              ? resolve(result.value)
-              : adopt(result.value).then(fulfilled, rejected);
+            result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
           }
           step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
@@ -188,8 +175,7 @@ var require_core = __commonJS({
         if (mod && mod.__esModule) return mod;
         var result = {};
         if (mod != null) {
-          for (var k in mod)
-            if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+          for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
         }
         result['default'] = mod;
         return result;
@@ -229,14 +215,11 @@ var require_core = __commonJS({
       } else {
         command_1.issueCommand('add-path', {}, inputPath);
       }
-      process.env[
-        'PATH'
-      ] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
+      process.env['PATH'] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
     }
     exports2.addPath = addPath;
     function getInput(name, options) {
-      const val =
-        process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
+      const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
       if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
       }
@@ -266,17 +249,11 @@ var require_core = __commonJS({
     }
     exports2.debug = debug;
     function error(message) {
-      command_1.issue(
-        'error',
-        message instanceof Error ? message.toString() : message
-      );
+      command_1.issue('error', message instanceof Error ? message.toString() : message);
     }
     exports2.error = error;
     function warning(message) {
-      command_1.issue(
-        'warning',
-        message instanceof Error ? message.toString() : message
-      );
+      command_1.issue('warning', message instanceof Error ? message.toString() : message);
     }
     exports2.warning = warning;
     function info(message) {
@@ -340,9 +317,7 @@ var run = () => {
     const matchingEntries = Object.entries(inputMap).filter(
       ([, value]) =>
         value === input ||
-        value
-          .map(potentialInput => potentialInput.toString().toLowerCase())
-          .includes(input)
+        value.map(potentialInput => potentialInput.toString().toLowerCase()).includes(input)
     );
     if (!matchingEntries || matchingEntries.length <= 0)
       throw new Error('The input did not match any expected inputs');
@@ -350,9 +325,7 @@ var run = () => {
       shouldOutputAllMatches && shouldOutputAllMatches.toLowerCase() === 'true'
         ? matchingEntries.map(match => match[0])
         : matchingEntries[0][0];
-    core.info(
-      `The value(s) from the input_map that matched the input: ${output}`
-    );
+    core.info(`The value(s) from the input_map that matched the input: ${output}`);
     core.setOutput('mapped_input', output);
   } catch (error) {
     core.setFailed(error.message);
