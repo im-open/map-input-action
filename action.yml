@@ -14,6 +14,12 @@ inputs:
   get_all_matches:
     required: false
     description: A flag for whether or not to output all matches. By default the output is the first item from the input_map that matches. If this value is true then an array with every match is returned.
+  error_on_no_match:
+    required: false
+    description: A flag to determine if the action should exit with an error code or not.
+  custom_error_message:
+    required: false
+    description: A custom error message to print out when no match is found and error_on_no_match is true. If no value is given, a generic message is used.
 outputs:
   mapped_input:
     description: If get_all_matches is not set or is set to something other than true, then this is the first matching output from the input_map when compared to the input, otherwise it is an array of all matches.

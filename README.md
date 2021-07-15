@@ -4,17 +4,19 @@ An action for taking an input, comparing it to a list of values, and outputting 
 
 ## Inputs
 
-| Parameter                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `input`                 | The input to map.                                                                                           |
-| `input_map`               |  A json object where the property names are the desired output and the values are the list of values, or a single string value, to compare `input` against.                                               |
-| `get_all_matches`        | An optional flag for whether or not to output all matches. By default the output is the first item from the input_map that matches. If this value is true then an array with every match is returned.                                           |
+| Parameter              | Required | Description                                  |
+| ---------------------- | -------- | -------------------------------------------- |
+| `input`                | True     | The input to map. |
+| `input_map`            | True     | A json object where the property names are the desired output and the values are the list of values, or a single string value, to compare `input` against. |
+| `get_all_matches`      | False    | An optional flag for whether or not to output all matches. By default the output is the first item from the input_map that matches. If this value is true then an array with every match is returned. |
+| `error_on_no_match`    | False    | A flag to determine if the action should exit with an error code or not. Only the value `true` will cause an error. |
+| `custom_error_message` | False    | A custom error message to print out when no match is found and `error_on_no_match` is true. If no value is given and `error_on_no_match` is true, then the generic message "`The input did not match any of the expected inputs`" is used. |
 
 ## Output
 
 The matching property name(s) from the `input_map` where the value of the property equals the `input`. Depending on the `get_all_matches`, flag this will either be a single string (default) or an array of strings.
 
-## Example
+## Examples
 
 ```yml
 name: Do Something
@@ -32,10 +34,41 @@ jobs:
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: im-open/map-input-action@v1
+        uses: im-open/map-input-action@v1.0.1
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
+      - name: Do Some
+        if: ${{ steps.clean-user-input.outputs.mapped_input == 'Some' }}
+        run: echo "Some was the input"
+      - name: Do Thing
+        if: ${{ steps.clean-user-input.outputs.mapped_input == 'Thing' }}
+        run: echo "Thing was the input"
+```
+
+**Throw a custom error message when no match happens**
+```yml
+name: Throw error
+on:
+  workflow_dispatch:
+    inputs:
+      someInput:
+        description: Some value you want the user to specify
+        required: true
+jobs:
+  map-input:
+    runs-on: ubuntu-20.04
+    outputs:
+      someInputMapped: ${{ steps.clean-user-input.outputs.mapped_input }}
+    steps:
+      - name: Clean User Input
+        id: clean-user-input
+        uses: im-open/map-input-action@v1.0.1
+        with:
+          input: ${{ github.event.inputs.someInput }}
+          input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
+          error_on_no_match: true
+          custom_error_message: "Oh no, the user didn't enter some or thing!"
       - name: Do Some
         if: ${{ steps.clean-user-input.outputs.mapped_input == 'Some' }}
         run: echo "Some was the input"
