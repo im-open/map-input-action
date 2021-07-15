@@ -16,7 +16,7 @@ An action for taking an input, comparing it to a list of values, and outputting 
 
 The matching property name(s) from the `input_map` where the value of the property equals the `input`. Depending on the `get_all_matches`, flag this will either be a single string (default) or an array of strings.
 
-## Example
+## Examples
 
 ```yml
 name: Do Something
@@ -34,10 +34,41 @@ jobs:
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: im-open/map-input-action@v1
+        uses: im-open/map-input-action@v1.0.1
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
+      - name: Do Some
+        if: ${{ steps.clean-user-input.outputs.mapped_input == 'Some' }}
+        run: echo "Some was the input"
+      - name: Do Thing
+        if: ${{ steps.clean-user-input.outputs.mapped_input == 'Thing' }}
+        run: echo "Thing was the input"
+```
+
+**Throw a custom error message when no match happens**
+```yml
+name: Throw error
+on:
+  workflow_dispatch:
+    inputs:
+      someInput:
+        description: Some value you want the user to specify
+        required: true
+jobs:
+  map-input:
+    runs-on: ubuntu-20.04
+    outputs:
+      someInputMapped: ${{ steps.clean-user-input.outputs.mapped_input }}
+    steps:
+      - name: Clean User Input
+        id: clean-user-input
+        uses: im-open/map-input-action@v1.0.1
+        with:
+          input: ${{ github.event.inputs.someInput }}
+          input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
+          error_on_no_match: true
+          custom_error_message: "Oh no, the user didn't enter some or thing!"
       - name: Do Some
         if: ${{ steps.clean-user-input.outputs.mapped_input == 'Some' }}
         run: echo "Some was the input"
