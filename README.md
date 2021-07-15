@@ -4,11 +4,13 @@ An action for taking an input, comparing it to a list of values, and outputting 
 
 ## Inputs
 
-| Parameter                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `input`                 | The input to map.                                                                                           |
-| `input_map`               |  A json object where the property names are the desired output and the values are the list of values, or a single string value, to compare `input` against.                                               |
-| `get_all_matches`        | An optional flag for whether or not to output all matches. By default the output is the first item from the input_map that matches. If this value is true then an array with every match is returned.                                           |
+| Parameter              | Required | Description                                  |
+| ---------------------- | -------- | -------------------------------------------- |
+| `input`                | True     | The input to map. |
+| `input_map`            | True     | A json object where the property names are the desired output and the values are the list of values, or a single string value, to compare `input` against. |
+| `get_all_matches`      | False    | An optional flag for whether or not to output all matches. By default the output is the first item from the input_map that matches. If this value is true then an array with every match is returned. |
+| `error_on_no_match`    | False    | A flag to determine if the action should exit with an error code or not. Only the value `true` will cause an error. |
+| `custom_error_message` | False    | A custom error message to print out when no match is found and `error_on_no_match` is true. If no value is given and `error_on_no_match` is true, then the generic message "`The input did not match any of the expected inputs`" is used. |
 
 ## Output
 

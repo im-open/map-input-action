@@ -53,6 +53,7 @@ jobs:
           echo "Test Failed"
           exit code 1
 
+
       - name: Test mapping against a single value
         id: test-mapping-single-value
         uses: ./
@@ -68,6 +69,7 @@ jobs:
         run: |
           echo "Test Failed"
           exit code 1
+
 
       - name: Test getting all matches
         id: test-all-matches
@@ -85,3 +87,16 @@ jobs:
         run: |
           echo "Test Failed"
           exit code 1
+
+
+      - name: Test that no error happens if no matches are found and error_on_no_match is false
+        uses: ./
+        with:
+          input: "no-match"
+          input_map: "{ \"NoMatch\": \"value\" }"
+          error_on_no_match: false
+      - name: Test that no error happens if no matches are found and error_on_no_match is not set
+        uses: ./
+        with:
+          input: "no-match"
+          input_map: "{ \"NoMatch\": \"value\" }"
