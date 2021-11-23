@@ -292,15 +292,21 @@ var require_core = __commonJS({
   }
 });
 
-// index.js
+// src/main.js
 var core = require_core();
 var getInputMap = () => {
-  const inputMap = core.getInput('input_map', { required: true });
+  const inputMap = core.getInput('input_map', {
+    required: true
+  });
   return JSON.parse(inputMap);
 };
 var run = () => {
   try {
-    const input = core.getInput('input', { required: true }).toLowerCase();
+    const input = core
+      .getInput('input', {
+        required: true
+      })
+      .toLowerCase();
     const inputMap = getInputMap();
     const shouldOutputAllMatches = core.getInput('get_all_matches');
     const errorOnNoMatch = core.getInput('error_on_no_match');
