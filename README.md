@@ -74,7 +74,7 @@ jobs:
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: im-open/map-input-action@v1.0.2
+        uses: im-open/map-input-action@v1.0.3
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
