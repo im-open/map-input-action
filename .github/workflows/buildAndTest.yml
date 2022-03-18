@@ -1,5 +1,9 @@
-name: Build and Test
-on: 
+name: Build, Check for Changes and Test
+on:
+  # This workflow uses the pull_request trigger which prevents write permissions and secrets
+  # access to the target repository from public forks.  This should remain as a pull_request
+  # trigger because checkout, build, format and checking for changes do not need elevated
+  # permissions to the repository.  The reduced permissions for public forks is adequate.
   pull_request:
     paths-ignore:
       - '**.md'
@@ -32,7 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -42,7 +46,7 @@ jobs:
         uses: ./
         with:
           input: value
-          input_map: "{ \"MatchSuccessful\": [\"val\", \"value\"] }"
+          input_map: '{ "MatchSuccessful": ["val", "value"] }'
 
       - name: Success
         if: steps.test-mapping-list.outputs.mapped_input == 'MatchSuccessful'
@@ -53,13 +57,12 @@ jobs:
           echo "Test Failed"
           exit code 1
 
-
       - name: Test mapping against a single value
         id: test-mapping-single-value
         uses: ./
         with:
           input: value
-          input_map: "{ \"MatchSuccessful\": \"value\" }"
+          input_map: '{ "MatchSuccessful": "value" }'
 
       - name: Success
         if: steps.test-mapping-single-value.outputs.mapped_input == 'MatchSuccessful'
@@ -70,13 +73,12 @@ jobs:
           echo "Test Failed"
           exit code 1
 
-
       - name: Test getting all matches
         id: test-all-matches
         uses: ./
         with:
           input: value
-          input_map: "{ \"FirstMatch\": \"value\", \"SecondMatch\": \"value\" }"
+          input_map: '{ "FirstMatch": "value", "SecondMatch": "value" }'
           get_all_matches: true
 
       - name: Success
@@ -88,15 +90,14 @@ jobs:
           echo "Test Failed"
           exit code 1
 
-
       - name: Test that no error happens if no matches are found and error_on_no_match is false
         uses: ./
         with:
-          input: "no-match"
-          input_map: "{ \"NoMatch\": \"value\" }"
+          input: 'no-match'
+          input_map: '{ "NoMatch": "value" }'
           error_on_no_match: false
       - name: Test that no error happens if no matches are found and error_on_no_match is not set
         uses: ./
         with:
-          input: "no-match"
-          input_map: "{ \"NoMatch\": \"value\" }"
+          input: 'no-match'
+          input_map: '{ "NoMatch": "value" }'
