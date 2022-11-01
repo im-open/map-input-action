@@ -45,7 +45,7 @@ jobs:
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: im-open/map-input-action@v1.1.0
+        uses: im-open/map-input-action@v1.1.1
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
@@ -74,7 +74,7 @@ jobs:
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: im-open/map-input-action@v1.1.0
+        uses: im-open/map-input-action@v1.1.1
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
