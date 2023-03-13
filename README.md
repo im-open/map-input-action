@@ -1,14 +1,14 @@
 # Map Input
 
 An action for taking an input, comparing it to a list of values, and outputting the matching key. The comparison happens case-insensitively.
-    
-## Index 
+
+## Index
 
 - [Inputs](#inputs)
 - [Output](#output)
 - [Examples](#examples)
 - [Contributing](#contributing)
-  - [Recompiling](#recompiling)
+  - [Recompiling](#recompiling-manually)
   - [Incrementing the Version](#incrementing-the-version)
 - [Code of Conduct](#code-of-conduct)
 - [License](#license)
@@ -45,7 +45,8 @@ jobs:
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: im-open/map-input-action@v1.1.2
+        # You may also reference the major or major.minor version
+        uses: im-open/map-input-action@v1.1.3
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
@@ -58,6 +59,7 @@ jobs:
 ```
 
 **Throw a custom error message when no match happens**
+
 ```yml
 name: Throw error
 on:
@@ -74,7 +76,8 @@ jobs:
     steps:
       - name: Clean User Input
         id: clean-user-input
-        uses: im-open/map-input-action@v1.1.2
+        # You may also reference the major or major.minor version
+        uses: im-open/map-input-action@v1.1.3
         with:
           input: ${{ github.event.inputs.someInput }}
           input_map: "{ \"Some\": [\"some\", \"sme\", \"somee\"], \"Thing\": [\"thing\", \"thingggg\"] }"
