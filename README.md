@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This action was deprecated on 2023-09-08 and will no longer receive support or updates.
+
 # Map Input
 
 An action for taking an input, comparing it to a list of values, and outputting the matching key. The comparison happens case-insensitively.
